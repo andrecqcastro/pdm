@@ -96,7 +96,7 @@ tokenizer = AutoTokenizer.from_pretrained('bert-base-uncased')
 
 def tokenize(batch):
     tokenized_inputs = tokenizer(batch['review_body'], padding=True, truncation=True, max_length=128, return_tensors='pt')
-    tokenized_inputs["labels"] = torch.tensor(batch['star_rating'], dtype=torch.long)
+    tokenized_inputs["labels"] = torch.tensor(batch['star_rating'])
     return tokenized_inputs
 
 train_dataset = Dataset.from_spark(df_train).map(tokenize, batched=True)
@@ -108,7 +108,7 @@ test_dataset.set_format('torch', columns=['input_ids', 'attention_mask', 'labels
 # Initializing the model
 model = AutoModelForSequenceClassification.from_pretrained(
     'bert-base-uncased',
-    num_labels=len(np.unique(df['star_rating']))
+    num_labels=3
 )
 
 training_args = TrainingArguments(

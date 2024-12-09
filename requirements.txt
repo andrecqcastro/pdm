@@ -1,0 +1,10 @@
+pandas
+scikit-learn
+matplotlib
+transformers
+torch
+datasets
+numpy
+findspark
+kagglehub
+pyspark

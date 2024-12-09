@@ -27,7 +27,6 @@ file_path = './selected_data/amazon_reviews_us_Toys_v1_00.tsv'
 
 df = spark.read.csv(file_path, header=True, sep='\t', inferSchema=True)
 
-
 # Selecione as colunas relevantes
 df_selected = df.select("review_body", "star_rating")
 
@@ -97,7 +96,7 @@ tokenizer = AutoTokenizer.from_pretrained('bert-base-uncased')
 
 def tokenize(batch):
     tokenized_inputs = tokenizer(batch['review_body'], padding=True, truncation=True, max_length=128, return_tensors='pt')
-    tokenized_inputs["labels"] = torch.tensor(batch['star_rating'])
+    tokenized_inputs["labels"] = torch.tensor(batch['star_rating'], dtype=torch.long)
     return tokenized_inputs
 
 train_dataset = Dataset.from_spark(df_train).map(tokenize, batched=True)
@@ -120,7 +119,7 @@ training_args = TrainingArguments(
     learning_rate=1e-5,
     weight_decay=0.01,
     logging_dir='./logs',
-    evaluation_strategy="epoch",
+    eval_strategy="epoch",
     save_strategy="epoch",
     load_best_model_at_end=True,
     logging_steps=10,
@@ -157,8 +156,8 @@ def compute_metrics(pred):
 trainer = Trainer(
     model=model,
     args=training_args,
-    train_dataset=train_dataset,
-    eval_dataset=test_dataset,
+    train_dataset=train_dataset.map(tokenize, batched=True),
+    eval_dataset=test_dataset.map(tokenize, batched=True),
     compute_metrics=compute_metrics,
 )
 

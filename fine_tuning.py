@@ -1,6 +1,7 @@
 import pandas as pd
 import gzip
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import precision_recall_fscore_support, accuracy_score, mean_absolute_error, roc_auc_score
 import matplotlib.pyplot as plt
 from transformers import BertTokenizerFast, BertForSequenceClassification, Trainer, TrainingArguments
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
@@ -14,7 +15,7 @@ from pyspark.sql import SparkSession
 from pyspark.sql.functions import *
 
 os.environ["JAVA_HOME"] = "/usr/lib/jvm/java-11-openjdk-amd64"  # ATUALIZAR PARA O DIRETÓRIO DO SEU COMPUTADOR
-os.environ["SPARK_HOME"] = "/content/spark-3.5.2-bin-hadoop3"
+os.environ["SPARK_HOME"] = "/home/pressprexx/Software/spark-3.5.2-bin-hadoop3"
 
 # Garantindo que o Spark seja configurado corretamente
 findspark.init()
@@ -22,7 +23,7 @@ findspark.init()
 spark = SparkSession.builder.appName('BERT Fine Tuning').master("local[*]").getOrCreate()
 
 # Caminho do arquivo
-file_path = '/selected_data/amazon_reviews_us_Toys_v1_00.tsv'
+file_path = './selected_data/amazon_reviews_us_Toys_v1_00.tsv'
 
 df = spark.read.csv(file_path, header=True, sep='\t', inferSchema=True)
 

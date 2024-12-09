@@ -5,6 +5,8 @@ transformers
 torch
 datasets
 numpy
+streamlit
 findspark
 kagglehub
 pyspark
+accelerate

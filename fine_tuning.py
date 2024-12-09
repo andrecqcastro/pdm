@@ -10,17 +10,14 @@ import numpy as np
 import os
 import findspark
 from pyspark.sql import functions as F
-
-
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import *
 
 os.environ["JAVA_HOME"] = "/usr/lib/jvm/java-11-openjdk-amd64"  # ATUALIZAR PARA O DIRETÓRIO DO SEU COMPUTADOR
 os.environ["SPARK_HOME"] = "/content/spark-3.5.2-bin-hadoop3"
 
 # Garantindo que o Spark seja configurado corretamente
 findspark.init()
-
-from pyspark.sql import SparkSession
-from pyspark.sql.functions import *
 
 spark = SparkSession.builder.appName('BERT Fine Tuning').master("local[*]").getOrCreate()
 

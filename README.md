@@ -53,11 +53,6 @@ python fine_tuning.py
 - **Medallion:** Medallion Architecture code
 - **Inference Model:** Inferece code.
 
-## **License**  
-
-This project is licensed under the **MIT License**. See the `LICENSE` file for more details.  
-
----
 
 ## **Contact**  
 

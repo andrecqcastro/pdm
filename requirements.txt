@@ -10,3 +10,9 @@ findspark
 kagglehub
 pyspark
 accelerate
+torch
+fastapi
+uvicorn
+pydantic
+transformers
+joblib
